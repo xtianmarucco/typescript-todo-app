@@ -1,49 +1,45 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext } from 'react'
 import { nanoid } from 'nanoid'
 import { useLocalStorage } from 'usehooks-ts'
 
 interface TodoContextProps {
   todos: Todo[]
   addTodo: (text: string) => void
+  deleteTodo: (id: string) => void
+  editTodo: (id: string, text: string) => void
+  updateTodoStatus: (id: string) => void
 }
+
 export interface Todo {
   id: string
   text: string
   status: 'undone' | 'completed'
 }
+
 export const TodoContext = createContext<TodoContextProps | undefined>(
   undefined,
 )
 
 export const TodoProvider = (props: { children: React.ReactNode }) => {
-  const [todos, setTodos] = useState<Todo[]>([])
+  const [todos, setTodos] = useLocalStorage<Todo[]>('todos', [])
 
   // ::: ADD NEW TODO :::
   const addTodo = (text: string) => {
-    //setTodos([...todos, text])
     const newTodo: Todo = {
       id: nanoid(),
       text,
       status: 'undone',
     }
+
     setTodos([...todos, newTodo])
   }
 
-  // const value: TodoContextProps = {
-  //   todos,
-  //   addTodo,
-  // }
-
-  // DELETE A TODO
-  // const deleteTodo = (id: string) => {
-  //   setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id))
-  // }
+  // ::: DELETE A TODO :::
   const deleteTodo = (id: string) => {
     setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id))
   }
 
-  // EDIT A TODO
-
+  // ::: EDIT A TODO :::
   const editTodo = (id: string, text: string) => {
     setTodos(prevTodos => {
       return prevTodos.map(todo => {
