@@ -24,14 +24,58 @@ export const TodoProvider = (props: { children: React.ReactNode }) => {
     const newTodo: Todo = {
       id: nanoid(),
       text,
-      status:'undone',
+      status: 'undone',
     }
     setTodos([...todos, newTodo])
+  }
+
+  // const value: TodoContextProps = {
+  //   todos,
+  //   addTodo,
+  // }
+
+  // DELETE A TODO
+  // const deleteTodo = (id: string) => {
+  //   setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id))
+  // }
+  const deleteTodo = (id: string) => {
+    setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id))
+  }
+
+  // EDIT A TODO
+
+  const editTodo = (id: string, text: string) => {
+    setTodos(prevTodos => {
+      return prevTodos.map(todo => {
+        if (todo.id === id) {
+          return { ...todo, text }
+        }
+        return todo
+      })
+    })
+  }
+
+  // ::: UPDATE TODO STATUS :::
+  const updateTodoStatus = (id: string) => {
+    setTodos(prevTodos => {
+      return prevTodos.map(todo => {
+        if (todo.id === id) {
+          return {
+            ...todo,
+            status: todo.status === 'undone' ? 'completed' : 'undone',
+          }
+        }
+        return todo
+      })
+    })
   }
 
   const value: TodoContextProps = {
     todos,
     addTodo,
+    deleteTodo,
+    editTodo,
+    updateTodoStatus,
   }
 
   return (
