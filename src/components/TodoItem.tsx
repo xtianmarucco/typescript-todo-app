@@ -95,13 +95,13 @@ export const TodoItem = (props: { todo: Todo }) => {
             <button onClick={() => handleStatusUpdate(todo.id)}>
               {todo.status === 'undone' ? (
                 <span className="flex items-center gap-1">
-                  <BsCheck2Square />
-                  Mark Completed
+                  <TbRefresh />
+                  Undone
                 </span>
               ) : (
                 <span className="flex items-center gap-1">
-                  <TbRefresh />
-                  Mark Undone
+                  <BsCheck2Square />
+                  Completed
                 </span>
               )}
             </button>
